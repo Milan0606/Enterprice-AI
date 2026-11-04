@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+jinja2==3.1.6
+pydantic
+boto3
+psycopg
+pypdf
+python-docx
+httpx
+langgraph
+pinecone
+
+python-dotenv
+
+# agent observability (optional at runtime)
+
+glassflow-rius
