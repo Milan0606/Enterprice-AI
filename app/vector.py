@@ -22,16 +22,18 @@ def index():
     try:
         info = pc.describe_index(name)
     except Exception as exc:
+        status = getattr(exc, 'status_code', getattr(exc, 'status', None))
         # Only create on an actual 404; never hide auth/network failures.
-        if getattr(exc, 'status', None) != 404:
+        if status != 404 and exc.__class__.__name__ != 'NotFoundError':
             raise
         log.info('Creating Pinecone index %s (dimension=%d, metric=cosine)', name, s.embed_dim)
         try:
             pc.create_index(name=name, dimension=s.embed_dim, metric='cosine',
                 spec=ServerlessSpec(cloud=s.pinecone_cloud, region=s.pinecone_region))
         except Exception as create_exc:
+            create_status = getattr(create_exc, 'status_code', getattr(create_exc, 'status', None))
             # Another process may have created the index concurrently.
-            if getattr(create_exc, 'status', None) != 409:
+            if create_status != 409:
                 raise
         info = pc.describe_index(name)
     if int(info.dimension) != s.embed_dim:
