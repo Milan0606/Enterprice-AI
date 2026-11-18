@@ -189,7 +189,7 @@ BEDROCK_CHAT_MODEL=amazon.nova-lite-v1:0
 EMBED_DIM=1024
 
 PINECONE_API_KEY=your-pinecone-key
-PINECONE_INDEX_NAME=atlas-rag-index
+PINECONE_INDEX_NAME=enterprise-ai-index
 PINECONE_CLOUD=aws
 PINECONE_REGION=us-east-1
 
@@ -199,7 +199,7 @@ HITL_ENABLED=true
 MEMORY_TURNS=6
 
 RIUS_API_KEY=
-RIUS_SERVICE_NAME=atlas-enterprise-ai
+RIUS_SERVICE_NAME=enterprise-ai
 RIUS_DISABLED=false
 RIUS_CAPTURE_CONTENT=false
 ```
@@ -268,7 +268,7 @@ This repository's intended deployment pattern uses **GitHub Actions + Amazon ECR
 
 ### AWS resources
 
-1. **ECR:** Create a private repository named `atlas-enterprise-ai` (or choose your own name).
+1. **ECR:** Create a private repository named `enterprise-ai` (or choose your own name).
 2. **EC2:** Launch a Linux instance with Docker, AWS CLI, and a GitHub Actions self-hosted runner. Restrict network access and protect the runner.
 3. **EC2 IAM role:** Grant the permissions required to pull ECR images and invoke the application services (Bedrock and the specific S3 bucket). Avoid permanent access keys on the instance.
 4. **GitHub IAM role:** Configure GitHub Actions OIDC for temporary credentials, with permissions to push to the target ECR repository and a trust policy restricted to your repository/branch.
@@ -280,8 +280,8 @@ Add the following repository **Variables** under `Settings → Secrets and varia
 
 | Name | Example |
 | --- | --- |
-| `AWS_REGION` | `us-east-1` |
-| `ECR_REPOSITORY_NAME` | `atlas-enterprise-ai` |
+| `AWS_REGION` | `ap-southeast-2` |
+| `ECR_REPOSITORY_NAME` | `enterprise-ai` |
 
 Add this repository **Secret**:
 
