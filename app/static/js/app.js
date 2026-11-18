@@ -1,7 +1,7 @@
 // Simple single-workspace UI. No login, tokens, or user accounts.
 const $=id=>document.getElementById(id);
 // Single-workspace conversation identifier, not an authentication token.
-let conversationId=sessionStorage.getItem('enterprise_conversation_id')||crypto.randomUUID();
+let conversationId=sessionStorage.getItem('enterprise_conversation_id')||crypto.generateUUID();
 sessionStorage.setItem('enterprise_conversation_id',conversationId);
 $('newChat').onclick=()=>{conversationId=crypto.generateUUID();sessionStorage.setItem('enterprise_conversation_id',conversationId);$('messages').replaceChildren();$('chatView')?.classList.remove('chat-started');toast('Started a new conversation')};
 
