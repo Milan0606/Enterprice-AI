@@ -3,7 +3,7 @@ const $=id=>document.getElementById(id);
 // Single-workspace conversation identifier, not an authentication token.
 let conversationId=sessionStorage.getItem('enterprise_conversation_id')||crypto.randomUUID();
 sessionStorage.setItem('enterprise_conversation_id',conversationId);
-$('newChat').onclick=()=>{conversationId=crypto.randomUUID();sessionStorage.setItem('enterprise_conversation_id',conversationId);$('messages').replaceChildren();$('chatView')?.classList.remove('chat-started');toast('Started a new conversation')};
+$('newChat').onclick=()=>{conversationId=crypto.generateUUID();sessionStorage.setItem('enterprise_conversation_id',conversationId);$('messages').replaceChildren();$('chatView')?.classList.remove('chat-started');toast('Started a new conversation')};
 
 const toast=msg=>{const el=$('toast');el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',4000)};
 const api=async(path,options={})=>{const res=await fetch(path,{...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});const data=await res.json();if(!res.ok)throw Error(data.detail||'Request failed');return data};
@@ -84,4 +84,19 @@ async function loadApprovals(){
       root.append(card);
     }
   }catch(e){root.textContent=`Unable to load approvals: ${e.message}. Check /api/approvals and your Uvicorn terminal.`;console.error('Approvals loading failed:',e)}
+}
+
+function generateUUID() {
+    if (crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+        /[xy]/g,
+        function (c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        }
+    );
 }
